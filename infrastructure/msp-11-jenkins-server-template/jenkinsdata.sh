@@ -1,20 +1,18 @@
 #! /bin/bash
-# update os
 yum update -y
-# set server hostname as jenkins-server
 hostnamectl set-hostname jenkins-server
+# install jenkins
+wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+yum upgrade
+amazon-linux-extras install java-openjdk11 -y
+yum install jenkins -y
+systemctl enable jenkins
+systemctl start jenkins
 # install git
 yum install git -y
-# install java 11
-yum install java-11-amazon-corretto -y
-# install jenkins
-wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
-rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
-amazon-linux-extras install epel
-yum install jenkins -y
-systemctl daemon-reload
-systemctl start jenkins
-systemctl enable jenkins
+amazon-linux-extras install epel -y
 # install docker
 amazon-linux-extras install docker -y
 systemctl start docker
